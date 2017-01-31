@@ -20,9 +20,15 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var viewColorPicker: UIView!
     
+    // We now need a Colour Model   `?` makes it an Optional...
+    var colorModel:ColorModel?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        // Create our instance of the color model when the view loads 
+        colorModel = ColorModel(valRed: 0.0, valGreen: 0.0, valBlue: 0.0) // Default to black
+        
         labelGreen.text = "0"
         labelRed.text   = "0"
         labelBlue.text  = "0"
@@ -42,18 +48,27 @@ class ViewController: UIViewController {
     // This function is called whenever the user changes the value of the slider
     @IBAction func redValueChanged(_ sender: UISlider) {
         labelRed.text = String(format: "%.0f", sender.value)
-        viewColorPicker.backgroundColor = UIColor(red: CGFloat(Float(labelRed.text!)!)/255, green: CGFloat(Float(labelGreen.text!)!)/255, blue: CGFloat(Float(labelBlue.text!)!)/255, alpha: 1)
+        updateColorPanel()
     }
     
     @IBAction func greenValueChanged(_ sender: UISlider) {
         labelGreen.text = String(format: "%.0f", sender.value)
-        viewColorPicker.backgroundColor = UIColor(red: CGFloat(Float(labelRed.text!)!)/255, green: CGFloat(Float(labelGreen.text!)!)/255, blue: CGFloat(Float(labelBlue.text!)!)/255, alpha: 1)
+        updateColorPanel()
     }
     
 
     @IBAction func blueValueChanged(_ sender: UISlider) {
         labelBlue.text = String(format: "%.0f", sender.value)
-        viewColorPicker.backgroundColor = UIColor(red: CGFloat(Float(labelRed.text!)!)/255, green: CGFloat(Float(labelGreen.text!)!)/255, blue: CGFloat(Float(labelBlue.text!)!)/255, alpha: 1)
+        updateColorPanel()
+    }
+    
+    func updateColorPanel() {
+        colorModel?.valRed   = self.sliderRed.value
+        colorModel?.valGreen = self.sliderGreen.value
+        colorModel?.valBlue  = self.sliderBlue.value
+        
+
+        viewColorPicker.backgroundColor = colorModel?.getColor()
     }
 }
 
